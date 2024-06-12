@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: IAM Policy to allow access to specific S3 bucket
+
+Resources:
+  IAMRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: 
+                - ec2.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Path: /
+      RoleName: assignment-3-role
+
+  IAMPolicy:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: assignment-3-policy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:GetObject
+              - s3:ListBucket
+            Resource: 'arn:aws:s3:::veris-srinivas-devops-assignment/*'
+      Roles: 
+        - !Ref IAMRole
+
+Outputs:
+  IAMRole:
+    Description: IAM Role
+    Value: !Ref IAMRole
