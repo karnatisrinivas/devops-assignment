@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Master Template to Nest Other Templates
+
+Resources:
+  NetworkingStack:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: https://veris-srinivas-devops-assignment.s3.amazonaws.com/vpc-routetable.yaml
+  SecurityGroupStack:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: https://veris-srinivas-devops-assignment.s3.amazonaws.com/security-group.yaml
+      Parameters:
+        VPC: !GetAtt NetworkingStack.Outputs.VPC  
+  IAMStack:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: https://veris-srinivas-devops-assignment.s3.amazonaws.com/iam-policy.yaml
+
+  LoadBalancerStack:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: https://veris-srinivas-devops-assignment.s3.amazonaws.com/loadbalancer.yaml
+      Parameters:
+        PublicSubnet1: !GetAtt NetworkingStack.Outputs.PublicSubnet1
+        PublicSubnet2: !GetAtt NetworkingStack.Outputs.PublicSubnet2
+        SecurityGroup: !GetAtt SecurityGroupStack.Outputs.SecurityGroupId
+
+  Route53Stack:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: https://veris-srinivas-devops-assignment.s3.amazonaws.com/route53.yaml 
+      Parameters:
+        VPC: !GetAtt NetworkingStack.Outputs.VPC 
+        ALBDNSName: !GetAtt LoadBalancerStack.Outputs.ALBDNS
+        ELBDNSName: !GetAtt LoadBalancerStack.Outputs.LoadBalancerDNS

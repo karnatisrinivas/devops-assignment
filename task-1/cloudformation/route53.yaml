@@ -1,0 +1,46 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Route53 Resources
+
+Parameters:
+  VPC:
+    Type: String
+    Description: The ID of the VPC
+  ALBDNSName:
+    Type: String
+    Description: The DNS name of the ALB
+  ELBDNSName:
+    Type: String
+    Description: The DNS name of the ELB
+
+Resources:
+  PrivateHostedZone:
+    Type: 'AWS::Route53::HostedZone'
+    Properties:
+      Name: example.com
+      VPCs:
+        - VPCId: !Ref VPC
+          VPCRegion: us-east-1
+  ALBCnameRecord:
+    Type: 'AWS::Route53::RecordSet'
+    Properties:
+      HostedZoneId: !Ref PrivateHostedZone
+      Name: alb.example.com
+      Type: CNAME
+      TTL: '60'
+      ResourceRecords:
+        - !Ref ALBDNSName
+
+  ELBCnameRecord:
+    Type: 'AWS::Route53::RecordSet'
+    Properties:
+      HostedZoneId: !Ref PrivateHostedZone
+      Name: elb.example.com
+      Type: CNAME
+      TTL: '60'
+      ResourceRecords:
+        - !Ref ELBDNSName
+
+Outputs:
+  HostedZoneId:
+    Description: The ID of the hosted zone
+    Value: !Ref PrivateHostedZone
