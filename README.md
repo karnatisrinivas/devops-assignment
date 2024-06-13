@@ -10,5 +10,3 @@ We combine all four tasks into a single requirement. Use CloudFormation to creat
 - We can streamline the entire process to automatically get the ID of resources and use them in the terraform/cloudformation for creating Scaling group. 
 - Also can use terraform as well for creating all resources. 
 - For the script we can use boto3 for more refined results.  
-
-
