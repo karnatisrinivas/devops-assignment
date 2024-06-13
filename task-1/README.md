@@ -19,3 +19,5 @@ Using the CloudFormation UI, I successfully created the stack with the required 
 - ELB and ALB [Image here](./cloudformation/images/lbs.png)
 - Route53 with CNAME entry for ALB and ELB [Image here](./cloudformation/images/r53.png)
 
+
+Ideally we would not want to use classic load balancer (ELB), we mostly use ALB/NLB based on the scenarios. 

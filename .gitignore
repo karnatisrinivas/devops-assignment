@@ -1,4 +1,8 @@
 .pem
 .ini
 .cfg
+.tfstate
+.lock.json
+.lock.hcl
+.terraform*
 
